@@ -1,0 +1,1056 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  :root {
+    --cream: #FFFDF7;
+    --gold: #C9A84C;
+    --gold-light: #FDF3D7;
+    --gold-soft: #F5DFA0;
+    --gold-deep: #A67C29;
+    --gold-dark: #7A5A1A;
+    --text-primary: #1A1409;
+    --text-secondary: #5C4A1E;
+    --text-muted: #9C8660;
+    --border: #EDE3C8;
+    --border-light: #F5EDD8;
+    --white: #FFFFFF;
+    --surface: #FAF6ED;
+    --success: #2D6A4F;
+    --success-light: #D8F3DC;
+  }
+
+  .phone-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0 0.5rem;
+  }
+
+  .phone {
+    width: 340px;
+    height: 680px;
+    background: #1A1409;
+    border-radius: 44px;
+    padding: 12px;
+    box-shadow: 0 0 0 1px #3a3020;
+  }
+
+  .phone-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--cream);
+    border-radius: 34px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .status-bar {
+    background: var(--cream);
+    padding: 10px 20px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .status-time { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .status-icons { font-size: 11px; color: var(--text-primary); display: flex; gap: 4px; align-items: center; }
+
+  .screen-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+  .screen-content::-webkit-scrollbar { display: none; }
+
+  .tab-bar {
+    background: var(--white);
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    padding: 8px 0 12px;
+    flex-shrink: 0;
+  }
+
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 2px 0;
+    border: none;
+    background: none;
+  }
+
+  .tab-icon { font-size: 20px; line-height: 1; }
+  .tab-label { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+  .tab-item.active .tab-label { color: var(--gold); }
+  .tab-item.active .tab-icon { filter: none; }
+
+  .screen { display: none; padding: 0 0 8px; }
+  .screen.active { display: block; }
+
+  .hero-section {
+    background: var(--cream);
+    padding: 14px 16px 12px;
+  }
+
+  .greeting { font-size: 12px; color: var(--text-muted); }
+  .hero-name { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+
+  .avatar-row { display: flex; justify-content: space-between; align-items: flex-start; }
+
+  .avatar-circle {
+    width: 38px; height: 38px; border-radius: 19px;
+    background: var(--gold-light);
+    border: 1.5px solid var(--gold-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: var(--gold-dark);
+  }
+
+  .ayah-card {
+    background: var(--gold-light);
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--gold-soft);
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .ayah-label {
+    font-size: 9px; color: var(--gold-deep);
+    font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+
+  .ayah-arabic { font-size: 17px; color: var(--text-primary); line-height: 1.6; margin-bottom: 3px; }
+  .ayah-translit { font-size: 10px; color: var(--gold-deep); font-style: italic; margin-bottom: 3px; }
+  .ayah-meaning { font-size: 10px; color: var(--text-secondary); line-height: 1.5; }
+
+  .section { padding: 12px 16px 0; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .section-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .section-sub { font-size: 10px; color: var(--text-muted); }
+  .section-action { font-size: 11px; color: var(--gold); font-weight: 500; cursor: pointer; }
+
+  .prayer-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .prayer-scroll::-webkit-scrollbar { display: none; }
+
+  .prayer-pill {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 8px 12px;
+    border: 0.5px solid var(--border);
+    text-align: center;
+    min-width: 64px;
+    flex-shrink: 0;
+  }
+
+  .prayer-pill.current { background: var(--gold); border-color: var(--gold); }
+  .prayer-name { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
+  .prayer-pill.current .prayer-name { color: rgba(255,255,255,0.8); }
+  .prayer-time { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .prayer-pill.current .prayer-time { color: white; }
+
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--border);
+  }
+
+  .progress-track {
+    height: 7px; background: var(--border);
+    border-radius: 4px; overflow: hidden; margin-top: 6px;
+  }
+  .progress-fill { height: 7px; background: var(--gold); border-radius: 4px; }
+
+  .progress-row { display: flex; align-items: center; gap: 10px; }
+  .progress-pct { font-size: 22px; font-weight: 700; color: var(--gold); }
+  .progress-label { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .progress-frac { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .divider { height: 0.5px; background: var(--border); margin: 10px 0; }
+
+  .next-row { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .next-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .next-title { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+  .next-meta { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .chevron { font-size: 18px; color: var(--gold); margin-left: auto; }
+
+  .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .quick-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 10px;
+    border: 0.5px solid var(--border);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .quick-icon { font-size: 24px; margin-bottom: 5px; }
+  .quick-label { font-size: 11px; font-weight: 500; color: var(--text-primary); line-height: 1.3; }
+
+  .adhkar-reminder {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .reminder-icon { font-size: 24px; }
+  .reminder-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .reminder-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .begin-btn { background: var(--gold); color: white; border: none; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: 600; margin-left: auto; cursor: pointer; flex-shrink: 0; }
+
+  .module-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .module-header {
+    padding: 12px 14px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cream);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .module-icon-circle {
+    width: 38px; height: 38px; border-radius: 19px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+
+  .module-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .module-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .module-prog { display: flex; align-items: center; gap: 6px; margin-top: 5px; }
+  .module-frac { font-size: 10px; color: var(--text-muted); }
+
+  .lesson-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 8px;
+    border-bottom: 0.5px solid var(--border-light);
+    cursor: pointer;
+  }
+
+  .lesson-row:last-child { border-bottom: none; }
+  .lesson-row.next { background: var(--gold-light); }
+  .lesson-row.locked { opacity: 0.4; cursor: default; }
+
+  .lesson-status {
+    width: 28px; height: 28px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); background: var(--surface);
+    font-size: 11px; flex-shrink: 0;
+  }
+  .lesson-status.done { background: var(--success-light); border-color: var(--success); color: var(--success); font-weight: 700; }
+  .lesson-status.next-s { background: var(--gold); border-color: var(--gold); color: white; font-weight: 700; font-size: 10px; }
+
+  .lesson-title { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+  .lesson-meta { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+  .lesson-dur { font-size: 10px; color: var(--text-muted); }
+  .badge { padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 700; }
+  .badge-gold { background: var(--gold-light); color: var(--gold-dark); }
+  .badge-success { background: var(--success-light); color: var(--success); }
+
+  .dua-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--border);
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .dua-cat { font-size: 9px; font-weight: 700; background: var(--gold-light); color: var(--gold-dark); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
+  .dua-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 5px; }
+  .dua-arabic { font-size: 14px; color: var(--text-primary); text-align: right; line-height: 1.6; margin-bottom: 3px; }
+  .dua-meaning { font-size: 10px; color: var(--text-muted); font-style: italic; }
+  .dua-source { font-size: 9px; color: var(--gold); margin-top: 4px; font-weight: 500; }
+
+  .search-bar {
+    background: var(--white);
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .cat-pills { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 10px; }
+  .cat-pills::-webkit-scrollbar { display: none; }
+  .cat-pill { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; border: 0.5px solid var(--border); background: var(--white); color: var(--text-muted); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .cat-pill.active { background: var(--gold); border-color: var(--gold); color: white; }
+
+  .adhkar-tab-row {
+    display: flex;
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 12px;
+  }
+
+  .adhkar-tab {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .adhkar-tab.active { background: var(--gold); color: white; }
+
+  .adhkar-progress-bar-wrap {
+    background: var(--gold-light);
+    padding: 10px 16px;
+    border-bottom: 0.5px solid var(--gold-soft);
+    margin-bottom: 10px;
+  }
+
+  .adhkar-progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .adhkar-prog-text { font-size: 11px; font-weight: 500; color: var(--gold-dark); }
+  .adhkar-reset { font-size: 10px; color: var(--gold-deep); cursor: pointer; }
+
+  .adhkar-item {
+    background: var(--white);
+    border-radius: 14px;
+    border: 0.5px solid var(--border);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .adhkar-item-header {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .adhkar-num {
+    width: 28px; height: 28px; border-radius: 14px;
+    background: var(--gold-light); border: 1px solid var(--gold-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--gold-dark); flex-shrink: 0;
+  }
+
+  .adhkar-num.done { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  .adhkar-item-title { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .adhkar-count-label { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+  .adhkar-arabic {
+    font-size: 14px; color: var(--text-primary);
+    text-align: right; line-height: 1.6;
+    padding: 0 12px 8px;
+  }
+
+  .tap-btn {
+    background: var(--gold);
+    margin: 0 10px 10px;
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    border: none;
+    width: calc(100% - 20px);
+  }
+
+  .done-badge { text-align: center; padding: 6px; font-size: 11px; color: var(--success); }
+
+  .prayer-guide-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .guide-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .guide-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .guide-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .prayer-times-list { background: var(--white); border-radius: 14px; border: 0.5px solid var(--border); overflow: hidden; }
+  .prayer-time-row { display: flex; align-items: center; padding: 10px 14px; gap: 10px; border-bottom: 0.5px solid var(--border-light); }
+  .prayer-time-row:last-child { border-bottom: none; }
+  .prayer-time-row.current { background: var(--gold-light); }
+  .pt-dot { width: 7px; height: 7px; border-radius: 4px; background: var(--border); flex-shrink: 0; }
+  .pt-dot.current { background: var(--gold); width: 9px; height: 9px; border-radius: 5px; }
+  .pt-name { font-size: 13px; font-weight: 500; color: var(--text-primary); flex: 1; }
+  .prayer-time-row.current .pt-name { font-weight: 700; color: var(--gold-dark); }
+  .pt-time { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+  .prayer-time-row.current .pt-time { color: var(--gold); font-weight: 700; }
+  .now-pill { background: var(--gold); color: white; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 4px; letter-spacing: 0.4px; }
+
+  .compass-wrap { display: flex; justify-content: center; padding: 16px 0 8px; }
+  .compass { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; }
+  .compass-inner { text-align: center; }
+  .compass-kaaba { font-size: 28px; }
+  .compass-label { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat-card { background: var(--white); border-radius: 12px; padding: 10px 8px; text-align: center; border: 0.5px solid var(--border); }
+  .stat-num { font-size: 22px; font-weight: 700; color: var(--gold); }
+  .stat-lbl { font-size: 9px; color: var(--text-muted); margin-top: 2px; line-height: 1.3; }
+
+  .streak-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .streak-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .streak-circle { width: 30px; height: 30px; border-radius: 15px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .streak-circle.done { background: var(--gold); border-color: var(--gold); color: white; font-weight: 700; }
+  .streak-circle.today { border: 2px solid var(--gold); }
+  .streak-day { font-size: 9px; color: var(--text-muted); }
+
+  .achievement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .achievement-card { background: var(--white); border-radius: 12px; padding: 10px; border: 0.5px solid var(--border); text-align: center; }
+  .achievement-card.locked { opacity: 0.4; background: var(--surface); }
+  .ach-icon { font-size: 24px; margin-bottom: 4px; }
+  .ach-title { font-size: 11px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .ach-desc { font-size: 9px; color: var(--text-muted); line-height: 1.3; }
+
+  .faq-item {
+    background: var(--white);
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    margin-bottom: 8px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .faq-q { padding: 11px 14px; font-size: 12px; font-weight: 500; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center; }
+  .faq-chevron { color: var(--text-muted); font-size: 13px; }
+  .faq-a { padding: 0 14px 11px; font-size: 11px; color: var(--text-secondary); line-height: 1.6; display: none; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+  .tip-card { background: var(--gold-light); border-radius: 12px; padding: 12px 14px; border: 0.5px solid var(--gold-soft); margin-bottom: 8px; }
+  .tip-label { font-size: 9px; font-weight: 700; color: var(--gold-deep); letter-spacing: 0.7px; text-transform: uppercase; margin-bottom: 5px; }
+  .tip-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+</style>
+
+<h2 class="sr-only">Interactive preview of the Nour new Muslim app — tap the bottom tabs to explore all screens.</h2>
+
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="phone-inner">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <span class="status-icons">
+          <i class="ti ti-wifi" style="font-size:13px" aria-hidden="true"></i>
+          <i class="ti ti-battery" style="font-size:13px" aria-hidden="true"></i>
+        </span>
+      </div>
+
+      <div class="screen-content">
+
+        <!-- HOME -->
+        <div id="screen-home" class="screen active">
+          <div class="hero-section">
+            <div class="avatar-row">
+              <div>
+                <div class="greeting">Good morning</div>
+                <div class="hero-name">Abdullah</div>
+              </div>
+              <div class="avatar-circle">A</div>
+            </div>
+            <div class="ayah-card">
+              <div class="ayah-label">Verse of the day</div>
+              <div class="ayah-arabic">إِنَّ مَعَ الْعُسْرِ يُسْرًا</div>
+              <div class="ayah-translit">Inna ma'al 'usri yusrā</div>
+              <div class="ayah-meaning">"Indeed, with hardship will be ease." — Quran 94:6</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <div>
+                <div class="section-title">Prayer times</div>
+                <div class="section-sub">Demo · London</div>
+              </div>
+              <div class="section-action" onclick="showScreen('prayer')">Guide →</div>
+            </div>
+            <div class="prayer-scroll">
+              <div class="prayer-pill"><div class="prayer-name">Fajr</div><div class="prayer-time">05:12</div></div>
+              <div class="prayer-pill"><div class="prayer-name">Dhuhr</div><div class="prayer-time">12:30</div></div>
+              <div class="prayer-pill current"><div class="prayer-name">Asr</div><div class="prayer-time">15:52</div></div>
+              <div class="prayer-pill"><div class="prayer-name">Maghrib</div><div class="prayer-time">19:18</div></div>
+              <div class="prayer-pill"><div class="prayer-name">Isha</div><div class="prayer-time">20:45</div></div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <div class="section-header">
+              <div class="section-title">Your journey</div>
+              <div class="section-action" onclick="showScreen('curriculum')">View all →</div>
+            </div>
+            <div class="card">
+              <div class="progress-row">
+                <div class="progress-pct">13%</div>
+                <div style="flex:1">
+                  <div class="progress-label">Overall progress</div>
+                  <div class="progress-frac">2 of 15 lessons complete</div>
+                </div>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width:13%"></div></div>
+              <div class="divider"></div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">Continue where you left off</div>
+              <div class="next-row" onclick="showScreen('curriculum')">
+                <div class="next-icon">📖</div>
+                <div>
+                  <div class="next-title">Your first steps</div>
+                  <div class="next-meta">6 min · Module 1</div>
+                </div>
+                <div class="chevron">›</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <div class="section-header"><div class="section-title">Quick access</div></div>
+            <div class="quick-grid">
+              <div class="quick-card" onclick="showScreen('duas')"><div class="quick-icon">🤲</div><div class="quick-label">Duas</div></div>
+              <div class="quick-card" onclick="showScreen('adhkar')"><div class="quick-icon">🌅</div><div class="quick-label">Morning Adhkar</div></div>
+              <div class="quick-card" onclick="showScreen('adhkar')"><div class="quick-icon">🌙</div><div class="quick-label">Evening Adhkar</div></div>
+              <div class="quick-card" onclick="showScreen('faq')"><div class="quick-icon">❓</div><div class="quick-label">FAQ & Tips</div></div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <div class="adhkar-reminder" onclick="showScreen('adhkar')" style="cursor:pointer">
+              <div class="reminder-icon">☀️</div>
+              <div>
+                <div class="reminder-title">Morning adhkar</div>
+                <div class="reminder-sub">5 remembrances to begin your day</div>
+              </div>
+              <button class="begin-btn">Begin</button>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+        <!-- CURRICULUM -->
+        <div id="screen-curriculum" class="screen">
+          <div style="padding:14px 16px 8px">
+            <div style="font-size:20px;font-weight:700;color:var(--text-primary)">Your curriculum</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Complete lessons in order to unlock the next</div>
+          </div>
+
+          <div class="section" style="margin-top:4px">
+            <div class="card" style="padding:10px 14px">
+              <div class="progress-row">
+                <div class="progress-pct">13%</div>
+                <div style="flex:1;margin-left:10px">
+                  <div class="progress-track" style="height:9px"><div class="progress-fill" style="width:13%;height:9px"></div></div>
+                  <div class="progress-frac" style="margin-top:4px">2 of 15 lessons complete</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:10px">
+            <div class="module-card">
+              <div class="module-header">
+                <div class="module-icon-circle" style="background:#C9A84C22">☪️</div>
+                <div style="flex:1">
+                  <div class="module-title">Your new beginning</div>
+                  <div class="module-sub">The Shahada & what it means</div>
+                  <div class="module-prog">
+                    <div class="progress-track" style="flex:1;height:4px"><div class="progress-fill" style="width:50%;height:4px"></div></div>
+                    <div class="module-frac">2/4</div>
+                  </div>
+                </div>
+              </div>
+              <div class="lesson-row">
+                <div class="lesson-status done">✓</div>
+                <div style="flex:1">
+                  <div class="lesson-title">What is the Shahada?</div>
+                  <div class="lesson-meta"><span class="lesson-dur">⏱ 5 min</span><span class="badge badge-success">Done</span></div>
+                </div>
+              </div>
+              <div class="lesson-row">
+                <div class="lesson-status done">✓</div>
+                <div style="flex:1">
+                  <div class="lesson-title">The meaning of Islam</div>
+                  <div class="lesson-meta"><span class="lesson-dur">⏱ 7 min</span><span class="badge badge-success">Done</span></div>
+                </div>
+              </div>
+              <div class="lesson-row next">
+                <div class="lesson-status next-s">3</div>
+                <div style="flex:1">
+                  <div class="lesson-title">Your first steps</div>
+                  <div class="lesson-meta"><span class="lesson-dur">⏱ 6 min</span></div>
+                </div>
+                <div class="chevron" style="font-size:16px">›</div>
+              </div>
+              <div class="lesson-row locked">
+                <div class="lesson-status">🔒</div>
+                <div style="flex:1">
+                  <div class="lesson-title">Building your community</div>
+                  <div class="lesson-meta"><span class="lesson-dur">⏱ 5 min</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="module-card" style="opacity:0.5">
+              <div class="module-header">
+                <div class="module-icon-circle" style="background:#A67C2922">🕌</div>
+                <div style="flex:1">
+                  <div class="module-title">The five pillars 🔒</div>
+                  <div class="module-sub">Core obligations of Islam</div>
+                  <div class="module-prog">
+                    <div class="progress-track" style="flex:1;height:4px"><div class="progress-fill" style="width:0%;height:4px"></div></div>
+                    <div class="module-frac">0/5</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+        <!-- DUAS -->
+        <div id="screen-duas" class="screen">
+          <div style="padding:14px 16px 10px">
+            <div style="font-size:20px;font-weight:700;color:var(--text-primary)">Duas</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Supplications from the Quran and Sunnah</div>
+          </div>
+          <div style="padding:0 16px">
+            <div class="search-bar">
+              <i class="ti ti-search" style="font-size:14px;color:var(--text-muted)" aria-hidden="true"></i>
+              <span style="font-size:12px;color:var(--text-muted)">Search duas...</span>
+            </div>
+            <div class="cat-pills">
+              <div class="cat-pill active">All</div>
+              <div class="cat-pill">Daily Life</div>
+              <div class="cat-pill">Prayer & Worship</div>
+              <div class="cat-pill">Protection</div>
+              <div class="cat-pill">Forgiveness</div>
+            </div>
+
+            <div class="dua-card">
+              <div class="dua-cat">Daily Life</div>
+              <div class="dua-title">Before eating</div>
+              <div class="dua-arabic">بِسْمِ اللَّهِ</div>
+              <div class="dua-meaning">"In the name of Allah"</div>
+              <div class="dua-source">Bukhari & Muslim</div>
+            </div>
+
+            <div class="dua-card">
+              <div class="dua-cat">Daily Life</div>
+              <div class="dua-title">After eating</div>
+              <div class="dua-arabic">الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا</div>
+              <div class="dua-meaning">"All praise is for Allah who fed us..."</div>
+              <div class="dua-source">Abu Dawud & Tirmidhi</div>
+            </div>
+
+            <div class="dua-card">
+              <div class="dua-cat">Prayer & Worship</div>
+              <div class="dua-title">After wudu</div>
+              <div class="dua-arabic">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ</div>
+              <div class="dua-meaning">"I bear witness that there is none worthy of worship except Allah..."</div>
+              <div class="dua-source">Muslim</div>
+            </div>
+
+            <div class="dua-card">
+              <div class="dua-cat">Protection</div>
+              <div class="dua-title">Ayat al-Kursi</div>
+              <div class="dua-arabic">اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ</div>
+              <div class="dua-meaning">"Allah — there is no deity except Him, the Ever-Living..."</div>
+              <div class="dua-source">Quran 2:255</div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+        <!-- ADHKAR -->
+        <div id="screen-adhkar" class="screen">
+          <div style="padding:14px 16px 10px;background:white;border-bottom:0.5px solid var(--border)">
+            <div style="font-size:20px;font-weight:700;color:var(--text-primary)">Adhkar</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;margin-bottom:10px">Daily remembrance of Allah</div>
+            <div class="adhkar-tab-row">
+              <button class="adhkar-tab active" onclick="switchAdhkar('morning', this)">☀️ Morning</button>
+              <button class="adhkar-tab" onclick="switchAdhkar('evening', this)">🌙 Evening</button>
+            </div>
+          </div>
+
+          <div class="adhkar-progress-bar-wrap">
+            <div class="adhkar-progress-row">
+              <span class="adhkar-prog-text" id="adhkar-progress-text">1 of 5 complete</span>
+              <span class="adhkar-reset" onclick="resetAdhkar()">Reset</span>
+            </div>
+            <div class="progress-track" style="height:5px"><div class="progress-fill" id="adhkar-prog-fill" style="width:20%;height:5px"></div></div>
+          </div>
+
+          <div style="padding:0 16px" id="adhkar-list">
+            <div class="adhkar-item" id="adhkar-0">
+              <div class="adhkar-item-header" onclick="toggleAdhkar(0)">
+                <div class="adhkar-num done" id="adhkar-num-0">✓</div>
+                <div style="flex:1">
+                  <div class="adhkar-item-title">Seeking refuge from Shaytan</div>
+                </div>
+                <span style="font-size:10px;color:var(--text-muted)" id="adhkar-chevron-0">▼</span>
+              </div>
+              <div class="adhkar-arabic">أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ</div>
+              <div id="adhkar-detail-0" style="display:none;padding:0 12px 8px">
+                <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:3px">Transliteration</div>
+                <div style="font-size:11px;color:var(--text-secondary);font-style:italic;margin-bottom:8px">A'ūdhu billāhi min ash-shayṭāni ar-rajīm</div>
+                <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:3px">Meaning</div>
+                <div style="font-size:11px;color:var(--text-primary);margin-bottom:8px">"I seek refuge in Allah from Satan, the expelled."</div>
+                <div style="background:var(--gold-light);border-radius:8px;padding:8px;border:0.5px solid var(--gold-soft)">
+                  <div style="font-size:10px;font-weight:600;color:var(--gold-dark);margin-bottom:3px">✨ Benefit</div>
+                  <div style="font-size:10px;color:var(--text-secondary);line-height:1.5">Protection from evil whispers throughout the day.</div>
+                </div>
+              </div>
+              <div class="done-badge">✅ Recited</div>
+            </div>
+
+            <div class="adhkar-item" id="adhkar-1">
+              <div class="adhkar-item-header" onclick="toggleAdhkar(1)">
+                <div class="adhkar-num" id="adhkar-num-1">2</div>
+                <div style="flex:1">
+                  <div class="adhkar-item-title">Ayat al-Kursi</div>
+                </div>
+                <span style="font-size:10px;color:var(--text-muted)" id="adhkar-chevron-1">▼</span>
+              </div>
+              <div class="adhkar-arabic">اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ</div>
+              <div id="adhkar-detail-1" style="display:none;padding:0 12px 8px">
+                <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:3px">Transliteration</div>
+                <div style="font-size:11px;color:var(--text-secondary);font-style:italic;margin-bottom:8px">Allāhu lā ilāha illā huwa al-ḥayyu al-qayyūm...</div>
+                <div style="background:var(--gold-light);border-radius:8px;padding:8px;border:0.5px solid var(--gold-soft)">
+                  <div style="font-size:10px;font-weight:600;color:var(--gold-dark);margin-bottom:3px">✨ Benefit</div>
+                  <div style="font-size:10px;color:var(--text-secondary);line-height:1.5">Whoever recites this in the morning is protected by Allah until the evening.</div>
+                </div>
+              </div>
+              <button class="tap-btn" onclick="markDone(1)">Mark as recited</button>
+            </div>
+
+            <div class="adhkar-item" id="adhkar-2">
+              <div class="adhkar-item-header" onclick="toggleAdhkar(2)">
+                <div class="adhkar-num" id="adhkar-num-2">3</div>
+                <div style="flex:1">
+                  <div class="adhkar-item-title">Glory be to Allah</div>
+                  <div class="adhkar-count-label">Recite 33×</div>
+                </div>
+                <span style="font-size:10px;color:var(--text-muted)" id="adhkar-chevron-2">▼</span>
+              </div>
+              <div class="adhkar-arabic">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</div>
+              <div style="padding:0 12px 8px">
+                <div class="progress-track" style="height:4px;margin-bottom:6px"><div class="progress-fill" id="adhkar-count-bar" style="width:0%;height:4px"></div></div>
+                <button class="tap-btn" id="adhkar-count-btn" onclick="tapCount()">Tap to count (0/33)</button>
+              </div>
+            </div>
+
+            <div class="adhkar-item" id="adhkar-3">
+              <div class="adhkar-item-header" onclick="toggleAdhkar(3)">
+                <div class="adhkar-num" id="adhkar-num-3">4</div>
+                <div style="flex:1"><div class="adhkar-item-title">The best remembrance</div></div>
+                <span style="font-size:10px;color:var(--text-muted)">▼</span>
+              </div>
+              <div class="adhkar-arabic">لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ</div>
+              <button class="tap-btn" onclick="markDone(3)">Mark as recited</button>
+            </div>
+
+            <div class="adhkar-item" id="adhkar-4">
+              <div class="adhkar-item-header" onclick="toggleAdhkar(4)">
+                <div class="adhkar-num" id="adhkar-num-4">5</div>
+                <div style="flex:1"><div class="adhkar-item-title">Morning supplication</div></div>
+                <span style="font-size:10px;color:var(--text-muted)">▼</span>
+              </div>
+              <div class="adhkar-arabic">اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا</div>
+              <button class="tap-btn" onclick="markDone(4)">Mark as recited</button>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+        <!-- PRAYER -->
+        <div id="screen-prayer" class="screen">
+          <div style="padding:14px 16px 8px">
+            <div style="font-size:20px;font-weight:700;color:var(--text-primary)">Prayer guide</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Times, steps & direction</div>
+          </div>
+
+          <div class="section">
+            <div class="section-header"><div class="section-title">Today's prayer times</div></div>
+            <div class="prayer-times-list">
+              <div class="prayer-time-row"><div class="pt-dot"></div><div class="pt-name">Fajr</div><div class="pt-time">05:12</div></div>
+              <div class="prayer-time-row"><div class="pt-dot"></div><div class="pt-name">Dhuhr</div><div class="pt-time">12:30</div></div>
+              <div class="prayer-time-row current"><div class="pt-dot current"></div><div class="pt-name">Asr</div><div class="pt-time">15:52</div><div class="now-pill">NOW</div></div>
+              <div class="prayer-time-row"><div class="pt-dot"></div><div class="pt-name">Maghrib</div><div class="pt-time">19:18</div></div>
+              <div class="prayer-time-row"><div class="pt-dot"></div><div class="pt-name">Isha</div><div class="pt-time">20:45</div></div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <div class="section-header"><div class="section-title">Qibla direction</div></div>
+            <div class="card" style="text-align:center;padding:14px">
+              <div class="compass-wrap">
+                <div class="compass">
+                  <div class="compass-inner">
+                    <div class="compass-kaaba">🕋</div>
+                    <div class="compass-label">Makkah</div>
+                  </div>
+                </div>
+              </div>
+              <div style="font-size:10px;color:var(--text-muted);line-height:1.5">Enable location for precise direction. Demo: SE 136° for London.</div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <div class="section-header"><div class="section-title">Step-by-step guides</div></div>
+            <div class="prayer-guide-card">
+              <div class="guide-icon">💧</div>
+              <div style="flex:1">
+                <div class="guide-title">How to perform Wudu</div>
+                <div class="guide-sub">Ritual purification · 11 steps with illustrations</div>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+            <div class="prayer-guide-card">
+              <div class="guide-icon">🤲</div>
+              <div style="flex:1">
+                <div class="guide-title">How to perform Salah</div>
+                <div class="guide-sub">Full prayer guide · 11 steps with illustrations</div>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div id="screen-progress" class="screen">
+          <div style="padding:14px 16px 8px">
+            <div style="font-size:20px;font-weight:700;color:var(--text-primary)">Your progress</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Keep going — every step counts</div>
+          </div>
+
+          <div class="section">
+            <div class="stats-row">
+              <div class="stat-card"><div class="stat-num">2</div><div class="stat-lbl">Lessons done</div></div>
+              <div class="stat-card"><div class="stat-num">4</div><div class="stat-lbl">Day streak</div></div>
+              <div class="stat-card"><div class="stat-num">2</div><div class="stat-lbl">Badges earned</div></div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:10px">
+            <div class="section-header"><div class="section-title">This week</div></div>
+            <div class="card">
+              <div class="streak-row">
+                <div class="streak-item"><div class="streak-circle done">✓</div><div class="streak-day">M</div></div>
+                <div class="streak-item"><div class="streak-circle done">✓</div><div class="streak-day">T</div></div>
+                <div class="streak-item"><div class="streak-circle done">✓</div><div class="streak-day">W</div></div>
+                <div class="streak-item"><div class="streak-circle done">✓</div><div class="streak-day">T</div></div>
+                <div class="streak-item"><div class="streak-circle today">·</div><div class="streak-day" style="color:var(--gold);font-weight:600">F</div></div>
+                <div class="streak-item"><div class="streak-circle">·</div><div class="streak-day">S</div></div>
+                <div class="streak-item"><div class="streak-circle">·</div><div class="streak-day">S</div></div>
+              </div>
+              <div style="font-size:11px;color:var(--text-secondary);text-align:center">🔥 4-day streak — keep going!</div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:10px">
+            <div class="section-header"><div class="section-title">Achievements</div><div class="section-sub">2 of 6 unlocked</div></div>
+            <div class="achievement-grid">
+              <div class="achievement-card"><div class="ach-icon">☪️</div><div class="ach-title">First Steps</div><div class="ach-desc">Completed your first lesson</div></div>
+              <div class="achievement-card"><div class="ach-icon">📖</div><div class="ach-title">Quran Beginner</div><div class="ach-desc">Learned Al-Fatiha</div></div>
+              <div class="achievement-card locked"><div class="ach-icon">🔒</div><div class="ach-title">Morning Soul</div><div class="ach-desc">Complete morning adhkar 3 days in a row</div></div>
+              <div class="achievement-card locked"><div class="ach-icon">🔒</div><div class="ach-title">Pure Intention</div><div class="ach-desc">Learned how to perform wudu</div></div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+        <!-- FAQ -->
+        <div id="screen-faq" class="screen">
+          <div style="padding:14px 16px 8px">
+            <div style="font-size:20px;font-weight:700;color:var(--text-primary)">FAQ & quick tips</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Common questions for new Muslims</div>
+          </div>
+
+          <div style="padding:0 16px;margin-top:8px">
+            <div class="tip-card">
+              <div class="tip-label">💡 Tip of the day</div>
+              <div class="tip-text">Start with what you can manage. Even saying "Bismillah" before meals is a beautiful act of worship. Every small step counts in the sight of Allah.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">Do I need to know Arabic to pray? <span class="faq-chevron">▼</span></div>
+              <div class="faq-a">You should learn the Arabic words of prayer, but it takes time. Many scholars allow new Muslims to pray in their own language at first while learning the Arabic. The most important thing is to begin praying and learn gradually.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">What breaks my wudu? <span class="faq-chevron">▼</span></div>
+              <div class="faq-a">Wudu is broken by: using the bathroom, passing wind, deep sleep, loss of consciousness, and (according to most scholars) touching private parts directly. If any of these occur, you must repeat wudu before praying.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">Can I pray if I miss the prayer time? <span class="faq-chevron">▼</span></div>
+              <div class="faq-a">Yes — if you miss a prayer due to forgetfulness or sleep, you should pray it as soon as you remember. There is no sin for an honest missed prayer, but you should make it up promptly and try to establish a routine going forward.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">Do I need to tell my family I converted? <span class="faq-chevron">▼</span></div>
+              <div class="faq-a">This is a personal decision. Islam does not require you to announce your conversion publicly. Many new Muslims find it helpful to connect with a local Muslim community first for support before telling family.</div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-q">What is halal food and do I have to eat it? <span class="faq-chevron">▼</span></div>
+              <div class="faq-a">Halal refers to food that is permissible in Islam. The main restrictions are pork and alcohol. Meat should ideally be slaughtered in the Islamic way. Many scholars make allowances for new Muslims adjusting to these changes gradually.</div>
+            </div>
+
+            <div class="tip-card" style="margin-top:8px">
+              <div class="tip-label">🤲 Remember</div>
+              <div class="tip-text">Islam is a journey, not a destination. Allah knows your heart and your effort. Be patient with yourself and trust that with sincerity, He will guide your steps.</div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+        </div>
+
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-item active" id="tab-home" onclick="showScreen('home')">
+          <i class="ti ti-home tab-icon" aria-hidden="true"></i>
+          <span class="tab-label">Home</span>
+        </button>
+        <button class="tab-item" id="tab-curriculum" onclick="showScreen('curriculum')">
+          <i class="ti ti-book tab-icon" aria-hidden="true"></i>
+          <span class="tab-label">Learn</span>
+        </button>
+        <button class="tab-item" id="tab-prayer" onclick="showScreen('prayer')">
+          <i class="ti ti-clock tab-icon" aria-hidden="true"></i>
+          <span class="tab-label">Prayer</span>
+        </button>
+        <button class="tab-item" id="tab-progress" onclick="showScreen('progress')">
+          <i class="ti ti-chart-bar tab-icon" aria-hidden="true"></i>
+          <span class="tab-label">Progress</span>
+        </button>
+        <button class="tab-item" id="tab-faq" onclick="showScreen('faq')">
+          <i class="ti ti-help tab-icon" aria-hidden="true"></i>
+          <span class="tab-label">FAQ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    var screen = document.getElementById('screen-' + name);
+    if (screen) { screen.classList.add('active'); }
+    var tab = document.getElementById('tab-' + name);
+    if (tab) { tab.classList.add('active'); }
+    document.querySelector('.screen-content').scrollTop = 0;
+  }
+
+  function toggleFaq(el) {
+    el.classList.toggle('open');
+  }
+
+  var adhkarDone = new Set([0]);
+  var tapCounter = 0;
+
+  function updateAdhkarProgress() {
+    var total = 5;
+    var done = adhkarDone.size;
+    var pct = Math.round((done / total) * 100);
+    document.getElementById('adhkar-prog-fill').style.width = pct + '%';
+    document.getElementById('adhkar-progress-text').textContent = done + ' of ' + total + ' complete';
+  }
+
+  function markDone(idx) {
+    adhkarDone.add(idx);
+    var numEl = document.getElementById('adhkar-num-' + idx);
+    if (numEl) { numEl.classList.add('done'); numEl.textContent = '✓'; }
+    var item = document.getElementById('adhkar-' + idx);
+    if (item) {
+      var btn = item.querySelector('.tap-btn');
+      if (btn) { btn.outerHTML = '<div class="done-badge">✅ Recited</div>'; }
+    }
+    updateAdhkarProgress();
+  }
+
+  function tapCount() {
+    tapCounter++;
+    var pct = Math.min(Math.round((tapCounter / 33) * 100), 100);
+    document.getElementById('adhkar-count-bar').style.width = pct + '%';
+    var btn = document.getElementById('adhkar-count-btn');
+    if (tapCounter >= 33) {
+      adhkarDone.add(2);
+      var numEl = document.getElementById('adhkar-num-2');
+      if (numEl) { numEl.classList.add('done'); numEl.textContent = '✓'; }
+      if (btn) { btn.outerHTML = '<div class="done-badge">✅ Recited 33×</div>'; }
+      updateAdhkarProgress();
+    } else {
+      if (btn) { btn.textContent = 'Tap to count (' + tapCounter + '/33)'; }
+    }
+  }
+
+  function toggleAdhkar(idx) {
+    var detail = document.getElementById('adhkar-detail-' + idx);
+    var chevron = document.getElementById('adhkar-chevron-' + idx);
+    if (!detail) return;
+    if (detail.style.display === 'none') {
+      detail.style.display = 'block';
+      if (chevron) chevron.textContent = '▲';
+    } else {
+      detail.style.display = 'none';
+      if (chevron) chevron.textContent = '▼';
+    }
+  }
+
+  function resetAdhkar() {
+    adhkarDone.clear();
+    tapCounter = 0;
+    updateAdhkarProgress();
+  }
+
+  function switchAdhkar(type, btn) {
+    document.querySelectorAll('.adhkar-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    adhkarDone.clear();
+    tapCounter = 0;
+    updateAdhkarProgress();
+  }
+
+  updateAdhkarProgress();
+</script>
